@@ -60,7 +60,8 @@ def get_event_list(session_csv_path: str, user_dict: Dict[str, str]) -> List[Tup
             event_list.append((row_dict['start_timestamp'], 1, user_name))  # Session start event
             event_list.append((row_dict['end_timestamp'], -1, user_name))  # Session end event
 
-    print(f'There are {len(event_list)} session start/end events read from {session_csv_path}')
+    print(f'There are {len(event_list)} session start/end events read from {session_csv_path} '
+          f'({len(event_list)/2:.0f} sessions)')
 
     return sorted(event_list)  # Sort by ascending event time
 
