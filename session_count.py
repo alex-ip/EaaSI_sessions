@@ -15,6 +15,11 @@ CSV_HEADERS = ['start_timestamp', 'end_timestamp', 'user_id', 'environment_id', 
 
 
 def get_user_dict(user_json_path: str) -> Dict[str, str]:
+    """
+    Read user JSON file into dict {<id>: <username>}
+    :param user_json_path:
+    :return: Dict {<id>: <username>}
+    """
     with open(user_json_path, newline='') as json_file:
         user_info_list = json.load(json_file)
 
@@ -27,6 +32,12 @@ def get_user_dict(user_json_path: str) -> Dict[str, str]:
 
 
 def get_event_list(session_csv_path: str, user_dict: Dict[str, str]) -> List[Tuple[datetime, int, str]]:
+    """
+    Read specified sesison CSV into a list of (<event_timestamp>, <session_increment>, <username>) event tuples
+    :param session_csv_path:
+    :param user_dict:
+    :return: List of (<event_timestamp>, <session_increment>, <username>) tuples
+    """
     event_list = []
     with open(session_csv_path, newline='') as csv_file:
         session_reader = csv.reader(csv_file, delimiter=',', quotechar='|')
@@ -54,6 +65,12 @@ def get_event_list(session_csv_path: str, user_dict: Dict[str, str]) -> List[Tup
 
 
 def write_session_count_csv_file(event_list: List[Tuple[datetime, int, str]], session_count_csv_path: str) -> None:
+    """
+    Write event list into CSV output file with columns datetime,sessions,users
+    :param event_list:
+    :param session_count_csv_path:
+    :return:
+    """
     session_count = 0
     max_session_count = 0
     current_users = {}
@@ -84,6 +101,9 @@ def write_session_count_csv_file(event_list: List[Tuple[datetime, int, str]], se
 
 
 def main():
+    """
+    Main function
+    """
     if len(sys.argv) >= 2:
         session_csv_path = sys.argv[1]
     else:
