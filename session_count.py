@@ -16,9 +16,9 @@ CSV_HEADERS = ['start_timestamp', 'end_timestamp', 'user_id', 'environment_id', 
 
 def get_user_dict(user_json_path: str) -> Dict[str, str]:
     """
-    Read user JSON file into dict {<id>: <username>}
-    :param user_json_path:
-    :return: Dict {<id>: <username>}
+    Read user JSON file into a dict {<id>: <username>} to lookup usernames from IDs
+    :param user_json_path: string path of input JSON file containing user details
+    :return: Dict {<id>: <username>} to lookup usernames from IDs
     """
     with open(user_json_path, newline='') as json_file:
         user_info_list = json.load(json_file)
@@ -33,10 +33,11 @@ def get_user_dict(user_json_path: str) -> Dict[str, str]:
 
 def get_event_list(session_csv_path: str, user_dict: Dict[str, str]) -> List[Tuple[datetime, int, str]]:
     """
-    Read specified sesison CSV into a list of (<event_timestamp>, <session_increment>, <username>) event tuples
-    :param session_csv_path:
-    :param user_dict:
-    :return: List of (<event_timestamp>, <session_increment>, <username>) tuples
+    Read specified sesison CSV into a list of (<event_timestamp>, <session_increment>, <username>) event tuples sorted
+    by ascending time
+    :param session_csv_path: string path of input CSV file with emulation session details
+    :param user_dict: dict {<id>: <username>} to lookup usernames from IDs
+    :return: List of (<event_timestamp>, <session_increment>, <username>) event tuples sorted by ascending time
     """
     event_list = []
     with open(session_csv_path, newline='') as csv_file:
@@ -66,10 +67,10 @@ def get_event_list(session_csv_path: str, user_dict: Dict[str, str]) -> List[Tup
 
 def write_session_count_csv_file(event_list: List[Tuple[datetime, int, str]], session_count_csv_path: str) -> None:
     """
-    Write event list into CSV output file with columns datetime,sessions,users
-    :param event_list:
-    :param session_count_csv_path:
-    :return:
+    Write event list into CSV output file with columns datetime, sessions, users
+    :param event_list: List of (<event_timestamp>, <session_increment>, <username>) event tuples sorted by ascending
+    time
+    :param session_count_csv_path: string path of output CSV file
     """
     session_count = 0
     max_session_count = 0
